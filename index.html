@@ -1,804 +1,579 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CodeRower Flutter Interview Prep - Siddharth Roy</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    
-    :root {
-      --color-background-primary: #ffffff;
-      --color-background-secondary: #f8f9fa;
-      --color-background-tertiary: #f1f3f5;
-      --color-background-info: #e6f1fb;
-      --color-text-primary: #1a1a1a;
-      --color-text-secondary: #6c757d;
-      --color-text-tertiary: #adb5bd;
-      --color-text-info: #378add;
-      --color-border-primary: rgba(0, 0, 0, 0.4);
-      --color-border-secondary: rgba(0, 0, 0, 0.3);
-      --color-border-tertiary: rgba(0, 0, 0, 0.15);
-      --color-border-info: #85b7eb;
-      --border-radius-md: 8px;
-      --border-radius-lg: 12px;
-      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      --font-mono: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
-    }
-    
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --color-background-primary: #1a1a1a;
-        --color-background-secondary: #2d2d2d;
-        --color-background-tertiary: #0f0f0f;
-        --color-background-info: #0c447c;
-        --color-text-primary: #ffffff;
-        --color-text-secondary: #adb5bd;
-        --color-text-tertiary: #6c757d;
-        --color-text-info: #85b7eb;
-        --color-border-primary: rgba(255, 255, 255, 0.4);
-        --color-border-secondary: rgba(255, 255, 255, 0.3);
-        --color-border-tertiary: rgba(255, 255, 255, 0.15);
-        --color-border-info: #378add;
-      }
-    }
-    
-    body { 
-      font-family: var(--font-sans); 
-      background: var(--color-background-tertiary);
-      line-height: 1.6;
-    }
-    
-    .container { 
-      max-width: 900px; 
-      margin: 0 auto; 
-      padding: 2rem 1rem; 
-    }
-    
-    .header { 
-      text-align: center; 
-      margin-bottom: 3rem; 
-    }
-    
-    .header h1 { 
-      font-size: 32px; 
-      font-weight: 500; 
-      color: var(--color-text-primary); 
-      margin-bottom: 0.5rem; 
-    }
-    
-    .header p { 
-      font-size: 16px; 
-      color: var(--color-text-secondary); 
-    }
-    
-    .nav { 
-      display: flex; 
-      gap: 8px; 
-      flex-wrap: wrap; 
-      margin-bottom: 2rem; 
-    }
-    
-    .nav button { 
-      flex: 1; 
-      min-width: 140px; 
-      padding: 12px 16px; 
-      background: var(--color-background-primary); 
-      border: 0.5px solid var(--color-border-tertiary); 
-      border-radius: var(--border-radius-lg); 
-      font-size: 14px; 
-      font-weight: 500; 
-      color: var(--color-text-secondary); 
-      cursor: pointer; 
-      transition: all 0.2s; 
-      font-family: var(--font-sans);
-    }
-    
-    .nav button:hover { 
-      background: var(--color-background-secondary); 
-    }
-    
-    .nav button.active { 
-      background: var(--color-background-info); 
-      color: var(--color-text-info); 
-      border-color: var(--color-border-info); 
-    }
-    
-    .section { 
-      display: none; 
-    }
-    
-    .section.active { 
-      display: block; 
-    }
-    
-    .question-card { 
-      background: var(--color-background-primary); 
-      border: 0.5px solid var(--color-border-tertiary); 
-      border-radius: var(--border-radius-lg); 
-      padding: 1.5rem; 
-      margin-bottom: 1.5rem; 
-      cursor: pointer; 
-      transition: all 0.2s; 
-    }
-    
-    .question-card:hover { 
-      border-color: var(--color-border-secondary); 
-    }
-    
-    .question-header { 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: start; 
-      gap: 1rem; 
-    }
-    
-    .question-header h3 { 
-      font-size: 17px; 
-      font-weight: 500; 
-      color: var(--color-text-primary); 
-      line-height: 1.5; 
-    }
-    
-    .toggle { 
-      color: var(--color-text-tertiary); 
-      font-size: 20px; 
-      transition: transform 0.3s; 
-      flex-shrink: 0;
-    }
-    
-    .question-card.open .toggle { 
-      transform: rotate(180deg); 
-    }
-    
-    .answer { 
-      max-height: 0; 
-      overflow: hidden; 
-      transition: max-height 0.3s ease; 
-    }
-    
-    .question-card.open .answer { 
-      max-height: 2000px; 
-    }
-    
-    .answer-content { 
-      padding-top: 1rem; 
-      border-top: 0.5px solid var(--color-border-tertiary); 
-      margin-top: 1rem; 
-      font-size: 15px; 
-      color: var(--color-text-primary); 
-      line-height: 1.7; 
-    }
-    
-    .answer-content p { 
-      margin-bottom: 0.75rem; 
-    }
-    
-    .answer-content code { 
-      background: var(--color-background-secondary); 
-      padding: 2px 6px; 
-      border-radius: 4px; 
-      font-family: var(--font-mono); 
-      font-size: 13px; 
-    }
-    
-    .badge { 
-      display: inline-block; 
-      background: var(--color-background-info); 
-      color: var(--color-text-info); 
-      font-size: 12px; 
-      padding: 4px 12px; 
-      border-radius: var(--border-radius-md); 
-      margin-bottom: 0.5rem; 
-    }
-    
-    .tips { 
-      background: var(--color-background-secondary); 
-      border-left: 3px solid var(--color-border-info); 
-      padding: 1rem 1.25rem; 
-      border-radius: 4px; 
-      margin-top: 2rem; 
-    }
-    
-    .tips h4 { 
-      font-size: 16px; 
-      font-weight: 500; 
-      margin-bottom: 0.75rem; 
-      color: var(--color-text-primary); 
-    }
-    
-    .tips ul { 
-      padding-left: 1.5rem; 
-    }
-    
-    .tips li { 
-      margin-bottom: 0.5rem; 
-      color: var(--color-text-primary); 
-      font-size: 14px; 
-      line-height: 1.6; 
-    }
-    
-    .search-box { 
-      margin-bottom: 1.5rem; 
-    }
-    
-    .search-box input { 
-      width: 100%; 
-      padding: 12px 16px; 
-      border: 0.5px solid var(--color-border-tertiary); 
-      border-radius: var(--border-radius-lg); 
-      font-size: 14px; 
-      background: var(--color-background-primary); 
-      color: var(--color-text-primary); 
-      font-family: var(--font-sans);
-    }
-    
-    .search-box input:focus { 
-      outline: none; 
-      border-color: var(--color-border-info); 
-    }
-    
-    .stats { 
-      display: grid; 
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
-      gap: 12px; 
-      margin-bottom: 2rem; 
-    }
-    
-    .stat-card { 
-      background: var(--color-background-secondary); 
-      border-radius: var(--border-radius-md); 
-      padding: 1rem; 
-      text-align: center; 
-    }
-    
-    .stat-card .label { 
-      font-size: 13px; 
-      color: var(--color-text-secondary); 
-      margin-bottom: 4px; 
-    }
-    
-    .stat-card .value { 
-      font-size: 24px; 
-      font-weight: 500; 
-      color: var(--color-text-primary); 
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Round Interview Prep | Post-Technical</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #0f3460;
+            --highlight: #e94560;
+            --text: #eee;
+            --text-dim: #aaa;
+            --success: #2ecc71;
+            --warning: #f39c12;
+        }
+
+        body {
+            font-family: 'IBM Plex Mono', monospace;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background particles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(233, 69, 96, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(15, 52, 96, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, var(--highlight), #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            letter-spacing: 0.05em;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--highlight), #ff6b6b);
+            width: 0%;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 20px var(--highlight);
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.8s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            border-color: var(--highlight);
+            box-shadow: 0 10px 40px rgba(233, 69, 96, 0.2);
+        }
+
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+        .section:nth-child(4) { animation-delay: 0.4s; }
+        .section:nth-child(5) { animation-delay: 0.5s; }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--highlight);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .icon {
+            font-size: 1.5rem;
+        }
+
+        .question-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid var(--highlight);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(10px);
+        }
+
+        .question {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .answer {
+            color: var(--text-dim);
+            line-height: 1.8;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            margin-top: 1rem;
+        }
+
+        .answer.show {
+            max-height: 500px;
+        }
+
+        .good-answer {
+            background: rgba(46, 204, 113, 0.1);
+            border-left: 3px solid var(--success);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+
+        .bad-answer {
+            background: rgba(243, 156, 18, 0.1);
+            border-left: 3px solid var(--warning);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+
+        .tip-box {
+            background: linear-gradient(135deg, rgba(233, 69, 96, 0.2), rgba(255, 107, 107, 0.2));
+            border: 1px solid var(--highlight);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin: 1.5rem 0;
+        }
+
+        .tip-title {
+            font-weight: 600;
+            color: var(--highlight);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .checklist {
+            list-style: none;
+        }
+
+        .checklist li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .checklist li:hover {
+            padding-left: 1rem;
+            color: var(--highlight);
+        }
+
+        .checklist li::before {
+            content: '□';
+            font-size: 1.5rem;
+            color: var(--text-dim);
+        }
+
+        .checklist li.checked::before {
+            content: '✓';
+            color: var(--success);
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--highlight), transparent);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-left: 2rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--highlight);
+            border: 3px solid var(--primary);
+            box-shadow: 0 0 10px var(--highlight);
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: var(--highlight);
+            margin-bottom: 0.5rem;
+        }
+
+        .practice-button {
+            background: linear-gradient(135deg, var(--highlight), #ff6b6b);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            box-shadow: 0 5px 20px rgba(233, 69, 96, 0.3);
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        .practice-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(233, 69, 96, 0.5);
+        }
+
+        .practice-button:active {
+            transform: translateY(-1px);
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--highlight);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--highlight);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .stat-label {
+            color: var(--text-dim);
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+
+            .stat-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .tag {
+            display: inline-block;
+            background: rgba(233, 69, 96, 0.2);
+            color: var(--highlight);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--secondary);
+            padding: 3rem;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            border: 1px solid var(--highlight);
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .close-modal {
+            float: right;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--text-dim);
+            transition: color 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: var(--highlight);
+        }
+
+        .practice-question {
+            font-size: 1.3rem;
+            color: var(--highlight);
+            margin: 2rem 0;
+            font-weight: 600;
+        }
+
+        .timer {
+            font-size: 3rem;
+            text-align: center;
+            color: var(--text);
+            margin: 2rem 0;
+            font-family: 'Playfair Display', serif;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>CodeRower Flutter Interview Prep</h1>
-      <p>Interview preparation guide for Siddharth Roy</p>
-    </div>
+    <div class="container">
+        <header>
+            <h1>HR Round Mastery</h1>
+            <p class="subtitle">Post-Technical Interview Preparation</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+        </header>
 
-    <div class="stats">
-      <div class="stat-card">
-        <div class="label">Total questions</div>
-        <div class="value">35</div>
-      </div>
-      <div class="stat-card">
-        <div class="label">Categories</div>
-        <div class="value">5</div>
-      </div>
-      <div class="stat-card">
-        <div class="label">Prep time</div>
-        <div class="value">2-3h</div>
-      </div>
-    </div>
+        <!-- Stats Overview -->
+        <div class="section">
+            <h2><span class="icon">📊</span> Your Interview Journey</h2>
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="stat-number">15</div>
+                    <div class="stat-label">Months Experience</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">₹27k</div>
+                    <div class="stat-label">Target Stipend</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">7</div>
+                    <div class="stat-label">Days Notice</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Confidence Level</div>
+                </div>
+            </div>
+        </div>
 
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Search questions...">
-    </div>
+        <!-- Timeline Section -->
+        <div class="section">
+            <h2><span class="icon">⏱️</span> What Happens Next</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-title">Day 0-1: Technical Round Complete ✅</div>
+                    <p>Send thank-you email within 24 hours. Keep applying to other roles.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-title">Day 1-3: Awaiting Response</div>
+                    <p>Strong candidates get called for HR round. Prepare answers while waiting.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-title">Day 3-5: HR/Final Round</div>
+                    <p>Culture fit, salary discussion, behavioral questions. This is what you're preparing for!</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-title">Day 5-7: Offer Letter</div>
+                    <p>Review terms, negotiate if needed, sign and celebrate! 🎉</p>
+                </div>
+            </div>
+        </div>
 
-    <div class="nav">
-      <button class="active" data-section="personal">Personal & background</button>
-      <button data-section="flutter">Flutter specific</button>
-      <button data-section="backend">Backend & API</button>
-      <button data-section="general">General technical</button>
-      <button data-section="behavioral">Behavioral</button>
-    </div>
+        <!-- Common HR Questions -->
+        <div class="section">
+            <h2><span class="icon">💬</span> Essential HR Questions</h2>
+            
+            <div class="question-card" onclick="toggleAnswer(this)">
+                <div class="question">1. "Tell me about yourself" (2 minutes)</div>
+                <div class="answer">
+                    <div class="good-answer">
+                        <strong>✅ GOOD ANSWER:</strong><br>
+                        "I'm a mobile developer with 15 months of professional experience. I started as the sole Android developer at a startup where I built applications and serverless infrastructure that helped secure 2 major clients. Recently, I've been expanding my skillset into full-stack development, learning Flutter, Docker, and Next.js. I'm excited about this internship because it aligns perfectly with my goal to become a well-rounded full-stack developer while contributing to real-world projects."
+                    </div>
+                    <div class="bad-answer">
+                        <strong>❌ BAD ANSWER:</strong><br>
+                        "Umm, I'm from Bhilai. I studied engineering. I like coding. I need a job because I've been unemployed for 7 months."
+                    </div>
+                    <div class="tip-box">
+                        <div class="tip-title">💡 Pro Tip:</div>
+                        Structure: Current role → Key achievement → What you're learning → Why this role
+                    </div>
+                </div>
+            </div>
 
-    <div id="personal" class="section active">
-      <div class="question-card" data-q="Tell me about yourself">
-        <div class="question-header">
-          <h3>Tell me about yourself</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>I'm Siddharth, a final-year CS student from Bhilai. I've been working professionally with Flutter since March 2023 at Nexshrim Technologies, where I built an HRMS app for 200+ employees. What really gets me excited is solving real problems—like when I optimized our app's performance and cut page load times by 40%.</p>
-            <p>I've also worked extensively with payment systems and backend security, building everything from edge functions for Razorpay to a real-time intrusion detection service. Outside work, I contribute to open-source projects and recently built a decentralized supply chain DApp combining Flutter with blockchain.</p>
-          </div>
-        </div>
-      </div>
+            <div class="question-card" onclick="toggleAnswer(this)">
+                <div class="question">2. "Why do you want this internship?"</div>
+                <div class="answer">
+                    <div class="good-answer">
+                        <strong>✅ GOOD ANSWER:</strong><br>
+                        "I'm looking to expand from Android-specific development into full-stack work. I've already started learning Flutter and backend technologies, but I want hands-on experience building complete applications from frontend to backend. Your company's focus on [mention something specific from job posting] really aligns with where I want to grow. Plus, as someone who's already handled infrastructure and architecture, I can contribute from day one while learning new technologies."
+                    </div>
+                    <div class="bad-answer">
+                        <strong>❌ BAD ANSWER:</strong><br>
+                        "I need experience. Any internship is fine. I want to learn new things."
+                    </div>
+                    <div class="tip-box">
+                        <div class="tip-title">💡 Pro Tip:</div>
+                        Research the company. Mention specific projects/tech they use. Show you've done homework!
+                    </div>
+                </div>
+            </div>
 
-      <div class="question-card" data-q="Why are you looking for an internship">
-        <div class="question-header">
-          <h3>Why are you looking for an internship when you already have 2 years of experience?</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>That's a fair question. I'm in my final semester, so I'm looking for something remote and flexible that lets me finish my degree while still working on meaningful projects. The internship-to-full-time path works perfectly for me right now.</p>
-            <p>Plus, I'm genuinely interested in CodeRower's diverse project portfolio—working across fintech, IoT, and enterprise solutions would expose me to different problem domains, which I value more than just the job title.</p>
-          </div>
-        </div>
-      </div>
+            <div class="question-card" onclick="toggleAnswer(this)">
+                <div class="question">3. "What are your salary expectations?"</div>
+                <div class="answer">
+                    <div class="good-answer">
+                        <strong>✅ GOOD ANSWER:</strong><br>
+                        "Based on my 15 months of experience and expanded skillset including Docker, Next.js, and serverless architecture, I'm looking for ₹25,000 to ₹30,000 per month. I can handle full-stack responsibilities and contribute across frontend, backend, and DevOps, which I believe justifies this range."
+                    </div>
+                    <div class="bad-answer">
+                        <strong>❌ BAD ANSWER:</strong><br>
+                        "Whatever you think is fair" OR "As much as possible" OR "₹50,000"
+                    </div>
+                    <div class="tip-box">
+                        <div class="tip-title">💡 Pro Tip:</div>
+                        Give a range (₹25-30k). Justify with skills. Be confident but flexible.
+                    </div>
+                </div>
+            </div>
 
-      <div class="question-card" data-q="When can you join">
-        <div class="question-header">
-          <h3>You're currently working at Nexshrim. When can you join us?</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>My academic commitments end by mid-May, so I can start full-time by June. However, I can begin part-time immediately if needed, dedicating 4-5 hours daily to get onboarded and contribute to ongoing projects.</p>
-          </div>
-        </div>
-      </div>
+            <div class="question-card" onclick="toggleAnswer(this)">
+                <div class="question">4. "Why did you leave your previous role?"</div>
+                <div class="answer">
+                    <div class="good-answer">
+                        <strong>✅ GOOD ANSWER:</strong><br>
+                        "I wanted to transition from Android-specific development to full-stack. I took time to upskill in Flutter, Docker, Next.js, and modern DevOps practices. Now I'm ready to apply these skills in a professional environment and continue growing."
+                    </div>
+                    <div class="bad-answer">
+                        <strong>❌ BAD ANSWER:</strong><br>
+                        "The salary was too low" OR "I didn't like my boss" OR "I got laid off"
+                    </div>
+                    <div class="tip-box">
+                        <div class="tip-title">💡 Pro Tip:</div>
+                        Frame as: Learning opportunity + Career growth. Never badmouth previous employer!
+                    </div>
+                </div>
+            </div>
 
-      <div class="question-card" data-q="Notice period">
-        <div class="question-header">
-          <h3>What's your notice period at Nexshrim?</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>Actually, my work there wrapped up in August 2025. I've been freelancing and working on personal projects since then, so there's no notice period. I can start whenever you need me.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="question-card" data-q="Why CodeRower">
-        <div class="question-header">
-          <h3>Why do you want to work at CodeRower?</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>A few reasons stand out. First, your global presence—teams in India, Sweden, Australia, Canada—means I'll work with diverse perspectives and coding standards, which I think will make me a better engineer.</p>
-            <p>Second, the variety of projects you handle. I've mostly done fintech and HRMS; getting into IoT, blockchain integration, or enterprise CRM systems would be a solid learning curve.</p>
-            <p>And honestly, the 4-month evaluation period with potential conversion appeals to me—it's a two-way street where both of us can see if it's the right fit.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="question-card" data-q="Salary expectations">
-        <div class="question-header">
-          <h3>What are your salary expectations?</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>Based on our call with Asha ma'am, we discussed 12K for the internship period, which works for me. I'm more focused on the learning opportunities and the chance to work on production-level projects. If I perform well and get converted to full-time, we can revisit the compensation then.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="question-card" data-q="Future goals">
-        <div class="question-header">
-          <h3>Where do you see yourself in 2-3 years?</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>I want to be someone who can own complete features—from architecting the solution to deployment. Right now, I'm strong on the mobile and backend side, but I want to get better at system design and handling scale.</p>
-            <p>Ideally, I'd be leading a small team or mentoring junior developers while still writing code myself. I'm not someone who wants to stop coding and just manage people.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="flutter" class="section">
-      <div class="question-card" data-q="Flutter experience">
-        <div class="question-header">
-          <h3>Walk me through your Flutter experience</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>I've been using Flutter professionally for almost 2 years. At Nexshrim, I built an Android HRMS app using <code>GoRouter</code> for navigation and <code>Riverpod</code> for state management. The app handles attendance, leave requests, salary slips—pretty standard HRMS stuff but for 200+ active users.</p>
-            <p>I've also integrated payment flows, worked with Firebase, Supabase, and built a social voice platform as an open-source contribution. My most complex Flutter project was probably the supply chain DApp where I integrated <code>web3dart</code> to communicate with Ethereum smart contracts.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="question-card" data-q="Riverpod vs Provider">
-        <div class="question-header">
-          <h3>Why do you prefer Riverpod over Provider or Bloc?</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>Riverpod gives me compile-time safety and better testability. With Provider, you can have runtime errors if you forget to wrap a widget with the provider. Riverpod doesn't need a BuildContext for most things, which makes the code cleaner.</p>
-            <p>I haven't used Bloc extensively, but from what I understand, it's great for complex state machines. For most apps, though, Riverpod's approach feels more straightforward without too much boilerplate.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="question-card" data-q="API calls Flutter">
-        <div class="question-header">
-          <h3>How do you handle API calls in Flutter?</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>I typically use the <code>http</code> or <code>dio</code> package depending on the requirements. For simple REST APIs, <code>http</code> works fine. For anything that needs interceptors, retries, or file uploads, I go with <code>dio</code>.</p>
-            <p>I usually create a service layer that returns typed models, handle errors with custom exceptions, and use <code>FutureBuilder</code> or <code>AsyncValue</code> (if using Riverpod) to manage loading states in the UI. For real-time data, I've used WebSockets and Supabase's realtime subscriptions.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="question-card" data-q="Widget lifecycle">
-        <div class="question-header">
-          <h3>Explain the widget lifecycle in Flutter</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>For <code>StatelessWidget</code>, there's just the <code>build</code> method—pretty straightforward.</p>
-            <p>For <code>StatefulWidget</code>, it's more involved:</p>
-            <p>• <code>createState()</code> creates the state object<br>
-            • <code>initState()</code> runs once when the widget is inserted into the tree—this is where I set up controllers, fetch initial data<br>
-            • <code>didChangeDependencies()</code> runs after initState and whenever the dependencies change<br>
-            • <code>build()</code> gets called whenever setState is triggered or the parent rebuilds<br>
-            • <code>dispose()</code> is where I clean up controllers, listeners, subscriptions to avoid memory leaks</p>
-            <p>I've debugged enough memory issues to be religious about disposing controllers.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="question-card" data-q="Axis alignment">
-        <div class="question-header">
-          <h3>What's the difference between mainAxisAlignment and crossAxisAlignment?</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>In a <code>Column</code>, mainAxis is vertical (top to bottom), crossAxis is horizontal. In a <code>Row</code>, it's flipped—mainAxis is horizontal, crossAxis is vertical.</p>
-            <p><code>MainAxisAlignment</code> controls spacing along the main axis (like <code>spaceBetween</code>, <code>center</code>, <code>start</code>). <code>CrossAxisAlignment</code> controls alignment perpendicular to that (<code>stretch</code>, <code>center</code>, <code>start</code>).</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="question-card" data-q="Optimize Flutter app">
-        <div class="question-header">
-          <h3>How would you optimize a Flutter app that's lagging?</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>First, I'd profile it using Flutter DevTools to see where the bottleneck is. Common fixes:</p>
-            <p>• Use <code>ListView.builder</code> instead of <code>ListView</code> with a list of children—lazy loading matters<br>
-            • Avoid rebuilding the entire widget tree; use <code>const</code> constructors where possible<br>
-            • If I'm using complex animations, I'd use <code>RepaintBoundary</code> to isolate expensive widgets<br>
-            • For images, use <code>cached_network_image</code> and proper sizing<br>
-            • Check if I'm doing heavy computations in the build method—move those to isolates if needed<br>
-            • Sometimes it's about reducing unnecessary setState calls or splitting widgets better</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="question-card" data-q="Platform channels">
-        <div class="question-header">
-          <h3>Have you worked with platform channels?</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>Not extensively, but I understand the concept. Platform channels let you call native Android (Kotlin/Java) or iOS (Swift/Objective-C) code from Dart. You use <code>MethodChannel</code> for method invocations and <code>EventChannel</code> for streaming data.</p>
-            <p>I haven't had a project that required writing custom native code yet, but I've used packages that rely on platform channels under the hood—like camera plugins or payment SDKs.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="question-card" data-q="Screen sizes">
-        <div class="question-header">
-          <h3>How do you handle different screen sizes in Flutter?</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>I use <code>MediaQuery.of(context).size</code> to get screen dimensions and build responsive layouts. For more complex responsive design, I've used the <code>responsive_builder</code> package or created custom breakpoint utilities.</p>
-            <p>I also rely on <code>LayoutBuilder</code> when I need to make decisions based on parent constraints. For text scaling, I make sure to use <code>MediaQuery.textScaleFactor</code> so the app respects user accessibility settings.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="question-card" data-q="async vs async*">
-        <div class="question-header">
-          <h3>What's the difference between async and async*?</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p><code>async</code> returns a <code>Future</code>—you use it for one-time asynchronous operations, like an API call.</p>
-            <p><code>async*</code> returns a <code>Stream</code>—it can yield multiple values over time. For example, if I'm listening to Firestore updates or tracking user location changes, I'd use <code>async*</code> with <code>yield</code> to emit values as they come in.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="backend" class="section">
-      <div class="question-card" data-q="Why FastAPI">
-        <div class="question-header">
-          <h3>You've worked with FastAPI. Why FastAPI over Flask or Django?</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>Speed and type safety. FastAPI uses Python type hints for automatic validation and documentation with OpenAPI. It's built on Starlette and Pydantic, which makes it async-first—important when you're handling concurrent requests.</p>
-            <p>Django is great for monolithic apps with admin panels, but for pure APIs, FastAPI feels leaner. Flask is fine too, but you end up writing a lot of boilerplate that FastAPI handles out of the box.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="question-card" data-q="JWT authentication">
-        <div class="question-header">
-          <h3>Explain how you implemented JWT authentication in your intrusion detection project</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>I used HTTP-only cookies to store JWT tokens—this prevents XSS attacks since JavaScript can't access the cookie. On login, the server generates a JWT with user claims and sends it as a cookie with <code>httpOnly=True</code>, <code>secure=True</code>, and <code>sameSite='Lax'</code>.</p>
-            <p>For protected routes, I have a dependency in FastAPI that reads the cookie, verifies the token signature using the secret key, and extracts the user info. If the token's expired or invalid, it returns a 401. For refresh tokens, I issue a longer-lived token that can generate new access tokens.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="question-card" data-q="Authentication vs Authorization">
-        <div class="question-header">
-          <h3>What's the difference between authentication and authorization?</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>Authentication is verifying *who* you are—like logging in with a password or OTP.</p>
-            <p>Authorization is checking *what* you're allowed to do after you're authenticated. For example, in the HRMS app, authentication happens when an employee logs in. Authorization determines whether they can approve leave requests (manager role) or just view their own salary slips (employee role).</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="question-card" data-q="Razorpay integration">
-        <div class="question-header">
-          <h3>How did you integrate Razorpay in your project?</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>It's a two-step process. First, the backend creates a Razorpay order using their API—you send the amount, currency, and get back an order ID. This order ID is sent to the Flutter app, which opens the Razorpay checkout.</p>
-            <p>After the user completes payment, Razorpay sends a signature back to the app. The app forwards this to the backend, which verifies the signature using HMAC-SHA256 with your API secret. If it matches, the payment is legit, and you update the database. I never trust the frontend to confirm payment status—verification always happens server-side.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="question-card" data-q="Security measures">
-        <div class="question-header">
-          <h3>What security measures did you implement in your projects?</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>Several layers:</p>
-            <p>• Input validation on both frontend and backend—never trust client data<br>
-            • Parameterized queries to prevent SQL injection<br>
-            • JWT tokens in HTTP-only cookies to prevent XSS<br>
-            • CORS properly configured to allow only trusted origins<br>
-            • Rate limiting to prevent brute-force attacks—I track failed login attempts by IP<br>
-            • Row-level security in Supabase to isolate tenant data<br>
-            • Environment variables for secrets, never hardcoded<br>
-            • HTTPS everywhere for data in transit</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="question-card" data-q="Row-level security">
-        <div class="question-header">
-          <h3>What's row-level security in Supabase?</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>RLS lets you define policies directly in the database that restrict which rows a user can access. For example, in a multi-tenant app, you'd have a policy like "users can only select rows where <code>user_id = auth.uid()</code>".</p>
-            <p>Even if someone bypasses your application logic or uses the API directly, the database enforces these rules. It's defense in depth—your last line of security.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="general" class="section">
-      <div class="question-card" data-q="Git workflow">
-        <div class="question-header">
-          <h3>Git workflow you follow?</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>I follow feature branching. Main or master is always production-ready. For any new feature or bug fix, I create a branch (<code>feature/payment-integration</code> or <code>fix/login-crash</code>). I make commits with clear messages—not "fixed stuff" but "Fixed null pointer exception in payment callback handler".</p>
-            <p>Once done, I push and create a pull request. If I'm working in a team, someone reviews it. After approval, it's merged, and the branch is deleted. For bigger teams, I've seen Gitflow with develop, release, and hotfix branches, but feature branching works for most projects.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="question-card" data-q="Debug production crash">
-        <div class="question-header">
-          <h3>How do you debug a production crash?</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>First, I check crash logs—Firebase Crashlytics or Sentry if it's integrated. The stack trace usually points to the exact line. If it's a null pointer or a state issue, I try to reproduce it locally.</p>
-            <p>I add more logging around the suspected area, sometimes add try-catch blocks temporarily to isolate the problem. If it's a rare race condition, I'd look at threading issues or async state changes. Once I find the root cause, I fix it, write a test to prevent regression, and push a hotfix.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="question-card" data-q="Database experience">
-        <div class="question-header">
-          <h3>What databases have you worked with?</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>Mostly PostgreSQL through Supabase and Firebase Firestore. PostgreSQL for traditional relational data—structured, ACID-compliant. Firestore for real-time apps where I need instant sync across devices.</p>
-            <p>I've also touched MySQL and SQLite for local storage in mobile apps. I'm comfortable writing SQL queries, designing schemas, setting up indexes, and understanding foreign keys and normalization.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="question-card" data-q="Challenging bug">
-        <div class="question-header">
-          <h3>Explain a challenging bug you fixed</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>In the HRMS app, we had this weird issue where the attendance screen would sometimes show duplicate entries. Turned out, the backend was sending paginated data, and our Flutter app was appending new data to the list on scroll.</p>
-            <p>But if the user scrolled up and triggered a refresh, we weren't clearing the old list—just kept appending. The fix was to differentiate between "load more" (append) and "refresh" (replace). Added a flag to track pagination state and cleared the list on pull-to-refresh. Simple in hindsight, but debugging took a while because it only happened with specific scroll patterns.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="question-card" data-q="Learning approach">
-        <div class="question-header">
-          <h3>What's your approach to learning new technologies?</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>I'm a hands-on learner. I read the official docs first—not tutorials, because docs explain the "why" behind design decisions. Then I build something small but realistic.</p>
-            <p>For example, when I learned web3dart, I didn't just follow a tutorial; I built the supply chain DApp to understand how transactions, gas, and contract calls actually work. I also read code from popular open-source projects to see how experienced developers structure things. And if I'm stuck, Stack Overflow and GitHub issues are gold mines.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="question-card" data-q="Prioritize tasks">
-        <div class="question-header">
-          <h3>How do you prioritize tasks when you have multiple deadlines?</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>I use a mix of urgency and impact. Critical bugs in production come first—no question. After that, I look at what's blocking others. If the backend team is waiting on my API integration, that's higher priority than a UI polish task.</p>
-            <p>For features with similar deadlines, I pick the one with higher business impact. I also break down big tasks into smaller chunks and knock out quick wins early—it builds momentum and gives stakeholders visible progress.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="behavioral" class="section">
-      <div class="question-card" data-q="Team conflict">
-        <div class="question-header">
-          <h3>Describe a time you had a conflict with a team member</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>There was a disagreement over state management in the HRMS app. I wanted to use Riverpod, but another developer preferred Bloc because they'd used it before. I explained why Riverpod made sense for our use case—less boilerplate, better testability—and offered to pair program with them on the first feature so they could get comfortable.</p>
-            <p>We did a small proof-of-concept together, and they saw the benefits. We went with Riverpod, and it worked out well. I think the key was not being stubborn but also backing up my suggestion with reasoning.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="question-card" data-q="Handle feedback">
-        <div class="question-header">
-          <h3>How do you handle feedback or criticism?</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>I try to separate ego from code. If someone points out a better approach in a code review, I genuinely appreciate it—I'm here to learn, not to be right. Early on, I used to get defensive when my code was criticized, but I realized that's just wasted energy.</p>
-            <p>Now, if I don't agree with feedback, I ask questions to understand their perspective. Sometimes they're right, sometimes we find a middle ground. Either way, it's a learning moment.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="question-card" data-q="Stuck on problem">
-        <div class="question-header">
-          <h3>What do you do when you're stuck on a problem for too long?</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>I have a rule—if I'm stuck for more than an hour, I take a break or ask for help. Usually, stepping away for 15 minutes helps. I've had bugs that I couldn't solve late at night, but the next morning, the solution was obvious.</p>
-            <p>If it's really blocking me, I'll reach out to someone or post on relevant forums. I've also learned to Google better—being specific with error messages and adding the framework version usually gets me 80% there.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="question-card" data-q="Project proud of">
-        <div class="question-header">
-          <h3>Tell me about a project you're proud of</h3>
-          <span class="toggle">▼</span>
-        </div>
-        <div class="answer">
-          <div class="answer-content">
-            <p>The real-time intrusion detection service. It wasn't just about writing code; it was about understanding security patterns—rate limiting, IP tracking, fingerprinting. I spent time reading about how brute-force attacks work, studied actual attack logs, and then built countermeasures.</p>
-            <p>When I deployed it, seeing it block automated login attempts in real-time was really satisfying. Plus, it's something I can put in front of a security-focused company and show I understand threat modeling, not just syntax.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="tips">
-      <h4>Interview tips</h4>
-      <ul>
-        <li><strong>Don't oversell:</strong> If you haven't done something, say so. "I haven't used Bloc extensively, but I understand the pattern and can pick it up quickly."</li>
-        <li><strong>Be specific:</strong> Instead of "I optimized the app," say "I replaced ListView with ListView.builder and added caching, which cut load time from 2.1s to 1.2s."</li>
-        <li><strong>Ask questions:</strong> At the end, ask about their tech stack, team structure, or types of projects you'd work on. Shows genuine interest.</li>
-        <li><strong>Prepare your workspace:</strong> Since it's remote, test your mic/camera beforehand. Have your resume and a notepad handy.</li>
-        <li><strong>Code on the spot:</strong> They might ask you to share your screen and write Flutter code. Practice building a simple list view or API call live.</li>
-      </ul>
-    </div>
-  </div>
-
-  <script>
-    const navButtons = document.querySelectorAll('.nav button');
-    const sections = document.querySelectorAll('.section');
-    const searchInput = document.getElementById('searchInput');
-    const questionCards = document.querySelectorAll('.question-card');
-
-    navButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        navButtons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        
-        const targetSection = btn.getAttribute('data-section');
-        sections.forEach(section => {
-          section.classList.remove('active');
-          if (section.id === targetSection) {
-            section.classList.add('active');
-          }
-        });
-        
-        searchInput.value = '';
-        questionCards.forEach(card => card.style.display = 'block');
-      });
-    });
-
-    questionCards.forEach(card => {
-      card.addEventListener('click', (e) => {
-        if (e.target.tagName !== 'CODE') {
-          card.classList.toggle('open');
-        }
-      });
-    });
-
-    searchInput.addEventListener('input', (e) => {
-      const searchTerm = e.target.value.toLowerCase();
-      
-      questionCards.forEach(card => {
-        const question = card.getAttribute('data-q').toLowerCase();
-        const answerContent = card.querySelector('.answer-content').textContent.toLowerCase();
-        
-        if (question.includes(searchTerm) || answerContent.includes(searchTerm)) {
-          card.style.display = 'block';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    });
-  </script>
-</body>
-</html>
+            <div class="question-card" onclick="toggleAnswer(this)">
+                <div class="question">5. "What's your biggest weakness?"</div>
+                <div class="answer">
+                    <div class="good-answer">
+                        <strong>✅ GOOD ANSWER:</strong><br>
+                        "I tend to dive deep into solving problems, which sometimes means I need to step back and consider the bigger picture. I'm working on this by setting regular check-ins during projects to ensure I'm aligned with overall goals, not just fixing immediate issues."
+                    </div>
+                    <div class="bad-answer">
+                        <strong>❌ BAD 
