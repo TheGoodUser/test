@@ -1,579 +1,202 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HR Round Interview Prep | Post-Technical</title>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+# Screening Assignment
 
-        :root {
-            --primary: #1a1a2e;
-            --secondary: #16213e;
-            --accent: #0f3460;
-            --highlight: #e94560;
-            --text: #eee;
-            --text-dim: #aaa;
-            --success: #2ecc71;
-            --warning: #f39c12;
-        }
+## 🎯 Objective
 
-        body {
-            font-family: 'IBM Plex Mono', monospace;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
-            color: var(--text);
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
+This assignment is designed to evaluate your ability to:
 
-        /* Animated background particles */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(233, 69, 96, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(15, 52, 96, 0.1) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 0;
-        }
+* Build a **mobile application** (React Native or Flutter)
+* Create and integrate a **backend API**
+* Work with **REST APIs**
+* Handle **file uploads**
+* Store and retrieve data using a **database (MySQL or PostgreSQL)**
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-            position: relative;
-            z-index: 1;
-        }
+---
 
-        header {
-            text-align: center;
-            margin-bottom: 3rem;
-            animation: fadeInDown 0.8s ease-out;
-        }
+## 🧩 Problem Statement
 
-        h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
-            background: linear-gradient(135deg, var(--highlight), #ff6b6b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 1rem;
-            letter-spacing: -0.02em;
-        }
+You are required to build a simple mobile application that allows users to:
 
-        .subtitle {
-            color: var(--text-dim);
-            font-size: 1.1rem;
-            letter-spacing: 0.05em;
-        }
+1. Upload an image
+2. Send the image to your own backend server
+3. Your backend will forward the image to a provided AI API
+4. Receive a response (video URL) from the AI API
+5. Store the request and response in a database
+6. Display the result in the mobile app
 
-        .progress-bar {
-            width: 100%;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            margin: 2rem 0;
-            overflow: hidden;
-        }
+---
 
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--highlight), #ff6b6b);
-            width: 0%;
-            transition: width 0.5s ease;
-            box-shadow: 0 0 20px var(--highlight);
-        }
+## 🔌 AI API Details (Provided)
 
-        .section {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            transition: all 0.3s ease;
-            animation: fadeInUp 0.8s ease-out;
-            animation-fill-mode: both;
-        }
+**Endpoint:**
 
-        .section:hover {
-            transform: translateY(-5px);
-            border-color: var(--highlight);
-            box-shadow: 0 10px 40px rgba(233, 69, 96, 0.2);
-        }
+```
+https://fatmachines.com/assignment/ai.php
+```
 
-        .section:nth-child(1) { animation-delay: 0.1s; }
-        .section:nth-child(2) { animation-delay: 0.2s; }
-        .section:nth-child(3) { animation-delay: 0.3s; }
-        .section:nth-child(4) { animation-delay: 0.4s; }
-        .section:nth-child(5) { animation-delay: 0.5s; }
+**Method:**
+`POST`
 
-        h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-            color: var(--highlight);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
+**Headers:**
 
-        .icon {
-            font-size: 1.5rem;
-        }
+```
+X-Auth-Key: abcdefghijklmnop
+```
 
-        .question-card {
-            background: rgba(255, 255, 255, 0.03);
-            border-left: 4px solid var(--highlight);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+**Response:**
 
-        .question-card:hover {
-            background: rgba(255, 255, 255, 0.08);
-            transform: translateX(10px);
-        }
+```json
+{
+  "success": true,
+  "output": "https://fatmachines.com/assignment/ai.mp4"
+}
+```
 
-        .question {
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-        }
+---
 
-        .answer {
-            color: var(--text-dim);
-            line-height: 1.8;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease;
-            margin-top: 1rem;
-        }
+## 🏗️ Requirements
 
-        .answer.show {
-            max-height: 500px;
-        }
+### 1. Mobile App (Frontend)
 
-        .good-answer {
-            background: rgba(46, 204, 113, 0.1);
-            border-left: 3px solid var(--success);
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 8px;
-        }
+You can use:
 
-        .bad-answer {
-            background: rgba(243, 156, 18, 0.1);
-            border-left: 3px solid var(--warning);
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 8px;
-        }
+* React Native **or**
+* Flutter
 
-        .tip-box {
-            background: linear-gradient(135deg, rgba(233, 69, 96, 0.2), rgba(255, 107, 107, 0.2));
-            border: 1px solid var(--highlight);
-            padding: 1.5rem;
-            border-radius: 15px;
-            margin: 1.5rem 0;
-        }
+#### Features:
 
-        .tip-title {
-            font-weight: 600;
-            color: var(--highlight);
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-        }
+* Select or capture an image
+* Upload image to your backend
+* Show loading state while processing
+* Display the returned video (URL)
+* Show previous uploads (history list)
 
-        .checklist {
-            list-style: none;
-        }
+---
 
-        .checklist li {
-            padding: 0.8rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
+### 2. Backend API
 
-        .checklist li:hover {
-            padding-left: 1rem;
-            color: var(--highlight);
-        }
+You can use:
 
-        .checklist li::before {
-            content: '□';
-            font-size: 1.5rem;
-            color: var(--text-dim);
-        }
+* PHP, Python, Golang, Node.js, or any backend language
 
-        .checklist li.checked::before {
-            content: '✓';
-            color: var(--success);
-        }
+#### Responsibilities:
 
-        .timeline {
-            position: relative;
-            padding-left: 2rem;
-        }
+* Accept image upload from mobile app
+* Forward request to the provided AI API
+* Handle authentication header
+* Return API response to the mobile app
 
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: linear-gradient(180deg, var(--highlight), transparent);
-        }
+#### Suggested Endpoint:
 
-        .timeline-item {
-            position: relative;
-            margin-bottom: 2rem;
-            padding-left: 2rem;
-        }
+```
+POST /upload
+```
 
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -2.5rem;
-            top: 0.5rem;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--highlight);
-            border: 3px solid var(--primary);
-            box-shadow: 0 0 10px var(--highlight);
-        }
+> You may run your backend locally (e.g., `localhost`) or host it anywhere.
 
-        .timeline-title {
-            font-weight: 600;
-            color: var(--highlight);
-            margin-bottom: 0.5rem;
-        }
+---
 
-        .practice-button {
-            background: linear-gradient(135deg, var(--highlight), #ff6b6b);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-family: 'IBM Plex Mono', monospace;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            box-shadow: 0 5px 20px rgba(233, 69, 96, 0.3);
-            display: inline-block;
-            margin-top: 1rem;
-        }
+### 3. Database
 
-        .practice-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(233, 69, 96, 0.5);
-        }
+Use:
 
-        .practice-button:active {
-            transform: translateY(-1px);
-        }
+* MySQL **or**
+* PostgreSQL
 
-        .stat-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
+#### Suggested Schema:
 
-        .stat-card {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 1.5rem;
-            border-radius: 15px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
+Table: `requests`
 
-        .stat-card:hover {
-            border-color: var(--highlight);
-            background: rgba(255, 255, 255, 0.08);
-        }
+| Field      | Type      | Description           |
+| ---------- | --------- | --------------------- |
+| id         | integer   | Primary key           |
+| image_url  | text      | Uploaded image path   |
+| output_url | text      | AI response video URL |
+| created_at | timestamp | Request timestamp     |
 
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--highlight);
-            font-family: 'Playfair Display', serif;
-        }
+---
 
-        .stat-label {
-            color: var(--text-dim);
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
-        }
+### 4. Flow Overview
 
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+1. User selects image in app
+2. App uploads image to backend
+3. Backend:
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+   * Receives image
+   * Calls AI API with header auth
+   * Gets response
+   * Stores record in DB
+4. Backend returns result to app
+5. App displays video and history
 
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5rem;
-            }
+---
 
-            .container {
-                padding: 1rem;
-            }
+## ⏱️ Time Limit
 
-            .section {
-                padding: 1.5rem;
-            }
+* Expected completion time: **2 hours**
+* Focus on functionality over perfection
 
-            .stat-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+---
 
-        .tag {
-            display: inline-block;
-            background: rgba(233, 69, 96, 0.2);
-            color: var(--highlight);
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
+## ✅ Evaluation Criteria
 
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
+| Criteria        | What We Look For                       |
+| --------------- | -------------------------------------- |
+| Code Quality    | Clean, readable, structured code       |
+| Architecture    | Logical separation of frontend/backend |
+| API Integration | Correct usage of REST APIs             |
+| Database Usage  | Proper schema and storage              |
+| UX              | Basic but functional UI                |
+| Error Handling  | Handles failures gracefully            |
 
-        .modal.show {
-            display: flex;
-        }
+---
 
-        .modal-content {
-            background: var(--secondary);
-            padding: 3rem;
-            border-radius: 20px;
-            max-width: 600px;
-            width: 90%;
-            border: 1px solid var(--highlight);
-            animation: fadeInUp 0.5s ease-out;
-        }
+## 🚀 Bonus (Optional)
 
-        .close-modal {
-            float: right;
-            font-size: 2rem;
-            cursor: pointer;
-            color: var(--text-dim);
-            transition: color 0.3s ease;
-        }
+* Image preview before upload
+* Retry mechanism on failure
+* Pagination for history
+* Clean UI/UX improvements
 
-        .close-modal:hover {
-            color: var(--highlight);
-        }
+---
 
-        .practice-question {
-            font-size: 1.3rem;
-            color: var(--highlight);
-            margin: 2rem 0;
-            font-weight: 600;
-        }
+## 📦 Submission Guidelines
 
-        .timer {
-            font-size: 3rem;
-            text-align: center;
-            color: var(--text);
-            margin: 2rem 0;
-            font-family: 'Playfair Display', serif;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <header>
-            <h1>HR Round Mastery</h1>
-            <p class="subtitle">Post-Technical Interview Preparation</p>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressBar"></div>
-            </div>
-        </header>
+Please provide:
 
-        <!-- Stats Overview -->
-        <div class="section">
-            <h2><span class="icon">📊</span> Your Interview Journey</h2>
-            <div class="stat-grid">
-                <div class="stat-card">
-                    <div class="stat-number">15</div>
-                    <div class="stat-label">Months Experience</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">₹27k</div>
-                    <div class="stat-label">Target Stipend</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">7</div>
-                    <div class="stat-label">Days Notice</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">100%</div>
-                    <div class="stat-label">Confidence Level</div>
-                </div>
-            </div>
-        </div>
+1. A **working demo video** of your application
+2. Upload the video to **Google Drive** with public access
+3. Share the **Google Drive link**
 
-        <!-- Timeline Section -->
-        <div class="section">
-            <h2><span class="icon">⏱️</span> What Happens Next</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-title">Day 0-1: Technical Round Complete ✅</div>
-                    <p>Send thank-you email within 24 hours. Keep applying to other roles.</p>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-title">Day 1-3: Awaiting Response</div>
-                    <p>Strong candidates get called for HR round. Prepare answers while waiting.</p>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-title">Day 3-5: HR/Final Round</div>
-                    <p>Culture fit, salary discussion, behavioral questions. This is what you're preparing for!</p>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-title">Day 5-7: Offer Letter</div>
-                    <p>Review terms, negotiate if needed, sign and celebrate! 🎉</p>
-                </div>
-            </div>
-        </div>
+> The app can run on **localhost or any hosted server** — both are acceptable.
 
-        <!-- Common HR Questions -->
-        <div class="section">
-            <h2><span class="icon">💬</span> Essential HR Questions</h2>
-            
-            <div class="question-card" onclick="toggleAnswer(this)">
-                <div class="question">1. "Tell me about yourself" (2 minutes)</div>
-                <div class="answer">
-                    <div class="good-answer">
-                        <strong>✅ GOOD ANSWER:</strong><br>
-                        "I'm a mobile developer with 15 months of professional experience. I started as the sole Android developer at a startup where I built applications and serverless infrastructure that helped secure 2 major clients. Recently, I've been expanding my skillset into full-stack development, learning Flutter, Docker, and Next.js. I'm excited about this internship because it aligns perfectly with my goal to become a well-rounded full-stack developer while contributing to real-world projects."
-                    </div>
-                    <div class="bad-answer">
-                        <strong>❌ BAD ANSWER:</strong><br>
-                        "Umm, I'm from Bhilai. I studied engineering. I like coding. I need a job because I've been unemployed for 7 months."
-                    </div>
-                    <div class="tip-box">
-                        <div class="tip-title">💡 Pro Tip:</div>
-                        Structure: Current role → Key achievement → What you're learning → Why this role
-                    </div>
-                </div>
-            </div>
+---
 
-            <div class="question-card" onclick="toggleAnswer(this)">
-                <div class="question">2. "Why do you want this internship?"</div>
-                <div class="answer">
-                    <div class="good-answer">
-                        <strong>✅ GOOD ANSWER:</strong><br>
-                        "I'm looking to expand from Android-specific development into full-stack work. I've already started learning Flutter and backend technologies, but I want hands-on experience building complete applications from frontend to backend. Your company's focus on [mention something specific from job posting] really aligns with where I want to grow. Plus, as someone who's already handled infrastructure and architecture, I can contribute from day one while learning new technologies."
-                    </div>
-                    <div class="bad-answer">
-                        <strong>❌ BAD ANSWER:</strong><br>
-                        "I need experience. Any internship is fine. I want to learn new things."
-                    </div>
-                    <div class="tip-box">
-                        <div class="tip-title">💡 Pro Tip:</div>
-                        Research the company. Mention specific projects/tech they use. Show you've done homework!
-                    </div>
-                </div>
-            </div>
+## 🔒 Code Privacy
 
-            <div class="question-card" onclick="toggleAnswer(this)">
-                <div class="question">3. "What are your salary expectations?"</div>
-                <div class="answer">
-                    <div class="good-answer">
-                        <strong>✅ GOOD ANSWER:</strong><br>
-                        "Based on my 15 months of experience and expanded skillset including Docker, Next.js, and serverless architecture, I'm looking for ₹25,000 to ₹30,000 per month. I can handle full-stack responsibilities and contribute across frontend, backend, and DevOps, which I believe justifies this range."
-                    </div>
-                    <div class="bad-answer">
-                        <strong>❌ BAD ANSWER:</strong><br>
-                        "Whatever you think is fair" OR "As much as possible" OR "₹50,000"
-                    </div>
-                    <div class="tip-box">
-                        <div class="tip-title">💡 Pro Tip:</div>
-                        Give a range (₹25-30k). Justify with skills. Be confident but flexible.
-                    </div>
-                </div>
-            </div>
+To maintain your privacy:
 
-            <div class="question-card" onclick="toggleAnswer(this)">
-                <div class="question">4. "Why did you leave your previous role?"</div>
-                <div class="answer">
-                    <div class="good-answer">
-                        <strong>✅ GOOD ANSWER:</strong><br>
-                        "I wanted to transition from Android-specific development to full-stack. I took time to upskill in Flutter, Docker, Next.js, and modern DevOps practices. Now I'm ready to apply these skills in a professional environment and continue growing."
-                    </div>
-                    <div class="bad-answer">
-                        <strong>❌ BAD ANSWER:</strong><br>
-                        "The salary was too low" OR "I didn't like my boss" OR "I got laid off"
-                    </div>
-                    <div class="tip-box">
-                        <div class="tip-title">💡 Pro Tip:</div>
-                        Frame as: Learning opportunity + Career growth. Never badmouth previous employer!
-                    </div>
-                </div>
-            </div>
+* You **do not need to share your source code or GitHub repository**
+* We will only ask for code access if required in later stages
 
-            <div class="question-card" onclick="toggleAnswer(this)">
-                <div class="question">5. "What's your biggest weakness?"</div>
-                <div class="answer">
-                    <div class="good-answer">
-                        <strong>✅ GOOD ANSWER:</strong><br>
-                        "I tend to dive deep into solving problems, which sometimes means I need to step back and consider the bigger picture. I'm working on this by setting regular check-ins during projects to ensure I'm aligned with overall goals, not just fixing immediate issues."
-                    </div>
-                    <div class="bad-answer">
-                        <strong>❌ BAD 
+---
+
+## ⚠️ Notes
+
+* You must use your own backend (**direct API calls from mobile are not allowed**)
+* Keep implementation simple and focused
+* You are free to use any libraries/frameworks
+
+---
+
+## 💡 Goal
+
+We are not expecting a perfect production-ready app.
+We want to see how you:
+
+* Structure your code
+* Think through the problem
+* Implement core features under time constraints
+
+---
+
+Good luck! 🚀
